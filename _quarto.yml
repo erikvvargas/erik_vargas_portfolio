@@ -21,6 +21,7 @@ book:
   #   - icon: rocket-takeoff
   #   href: https://erik-king-vargas.carrd.co/
   chapters:
+    - index.qmd
     - week_11-28-2023.qmd
     - week_12-5-2023.qmd
 

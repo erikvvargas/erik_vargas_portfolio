@@ -58,7 +58,7 @@ drwho_episodes %>%
   labs(title = 'Ratings of Dr. Who Episodes by Year',
        x = "Rating",
        y = "Year Episode Aired") +
-  theme_ipsum()+
+  # theme_ipsum()+
   
   theme(
     
