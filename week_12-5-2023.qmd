@@ -1,0 +1,10 @@
+---
+title: "Week of 12/4/2023"
+---
+
+## Preliminaries
+
+```{r}
+
+```
+
