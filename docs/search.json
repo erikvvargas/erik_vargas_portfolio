@@ -4,28 +4,28 @@
     "href": "index.html",
     "title": "Tidy Tuesday",
     "section": "",
-    "text": "Introduction"
+    "text": "Introduction\nThis Bookdown repository serves as a place to store my TidyTuesday submissions and showcase the code and deeper analysis on each dataset. As I continue to analyze the weekly datasets I’ll upload the code here and link to the new page in my social media posts. Thanks for reading!"
   },
   {
     "objectID": "week_11-28-2023.html#preliminaries",
     "href": "week_11-28-2023.html#preliminaries",
     "title": "Week of 11/27/2023",
     "section": "Preliminaries",
-    "text": "Preliminaries\nLoading up some libraries that will make this analysis easier, namely tidyverse and lubridate. Also, we’ll load the data from the tidytuesdayR package.\n\nlibrary(tidyverse)\nlibrary(viridis)\nlibrary(hrbrthemes)\nlibrary(ggridges)\nlibrary(lubridate)\n\ntuesdata <- tidytuesdayR::tt_load('2023-11-28')\n\n\n    Downloading file 1 of 3: `drwho_episodes.csv`\n    Downloading file 2 of 3: `drwho_directors.csv`\n    Downloading file 3 of 3: `drwho_writers.csv`\n\ndrwho_episodes <- tuesdata$drwho_episodes\ndrwho_directors <- tuesdata$drwho_directors\ndrwho_writers <- tuesdata$drwho_writers"
+    "text": "Preliminaries\nLoading up some libraries that will make this analysis easier, namely tidyverse and lubridate. Also, we’ll load the data from the tidytuesdayR package.\n\nlibrary(tidyverse)\nlibrary(viridis)\nlibrary(hrbrthemes)\nlibrary(ggridges)\nlibrary(lubridate)\n\n\ntuesdata <- tidytuesdayR::tt_load('2023-11-28')\n\ndrwho_episodes <- tuesdata$drwho_episodes\ndrwho_directors <- tuesdata$drwho_directors\ndrwho_writers <- tuesdata$drwho_writers"
   },
   {
     "objectID": "week_11-28-2023.html#data-cleaning",
     "href": "week_11-28-2023.html#data-cleaning",
     "title": "Week of 11/27/2023",
     "section": "Data Cleaning",
-    "text": "Data Cleaning\n\n# join all data together\n\ndrwho_episodes <- left_join(drwho_episodes, drwho_directors, \n                            by = \"story_number\")\n\ndrwho_episodes <- left_join(drwho_episodes, drwho_writers, \n                            by = \"story_number\")\n\n# get a year aired variable for each episode\ndrwho_episodes <- drwho_episodes %>% \n  mutate(year_aired = floor_date(first_aired, \"year\"))\n\n# strip out the month and day\ndrwho_episodes$year_aired <- year(drwho_episodes$year_aired)\n\ndrwho_episodes$year_aired <- as.factor(drwho_episodes$year_aired)"
+    "text": "Data Cleaning\nFirst we join the data together in one flat table, then create a year variable for each episode based on when it was aired. We also turn the year variable into a factor so that it will be plotted correctly later on.\n\n# join all data together\n\ndrwho_episodes <- left_join(drwho_episodes, drwho_directors, \n                            by = \"story_number\")\n\ndrwho_episodes <- left_join(drwho_episodes, drwho_writers, \n                            by = \"story_number\")\n\n# get a year aired variable for each episode\ndrwho_episodes <- drwho_episodes %>% \n  mutate(year_aired = floor_date(first_aired, \"year\"))\n\n# strip out the month and day\ndrwho_episodes$year_aired <- year(drwho_episodes$year_aired)\n\ndrwho_episodes$year_aired <- as.factor(drwho_episodes$year_aired)"
   },
   {
     "objectID": "week_11-28-2023.html#ridgeline-plot",
     "href": "week_11-28-2023.html#ridgeline-plot",
     "title": "Week of 11/27/2023",
     "section": "Ridgeline Plot",
-    "text": "Ridgeline Plot\n\ndrwho_episodes %>% \n  group_by(year_aired) %>% \n  ggplot(aes(x = rating, y = year_aired, group = year_aired,\n           fill = ..x..)) +\n  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +\n  scale_fill_viridis(name = \"Rating\", option = \"D\") +\n  \n  labs(title = 'Ratings of Dr. Who Episodes by Year',\n       x = \"Rating\",\n       y = \"Year Episode Aired\") +\n  # theme_ipsum()+\n  \n  theme(\n    \n    panel.spacing = unit(0.1, \"lines\"),\n    strip.text.x = element_text(size = 8),\n    axis.title.x = element_text(size = 15),\n    axis.title.y = element_text(size = 15)\n  )"
+    "text": "Ridgeline Plot\nFinally, we visualize the Dr. Who episode ratings by year the episodes were aired. An apparent decline in ratings can be seen as the show has progressed through 2022.\n\ndrwho_episodes %>% \n  group_by(year_aired) %>% \n  ggplot(aes(x = rating, y = year_aired, group = year_aired,\n           fill = ..x..)) +\n  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +\n  scale_fill_viridis(name = \"Rating\", option = \"D\") +\n  labs(title = 'Ratings of Dr. Who Episodes by Year',\n       x = \"Rating\",\n       y = \"Year Episode Aired\") +\n  theme(\n    panel.spacing = unit(0.1, \"lines\"),\n    strip.text.x = element_text(size = 8),\n    axis.title.x = element_text(size = 15),\n    axis.title.y = element_text(size = 15)\n  )"
   },
   {
     "objectID": "week_12-5-2023.html#preliminaries",
