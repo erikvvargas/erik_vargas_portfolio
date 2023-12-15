@@ -1,10 +1,83 @@
 ---
-title: "Week of 12/4/2023"
+title: "Week of 12/5/2023"
+execute: 
+  warning: false
+  message: false
 ---
 
 ## Preliminaries
 
-```{r}
+First we load up the datasets for this week. Reading from GitHub using the TidyTuesday library wouldn't work for me for some reason, so we read directly from GitHub.
 
+```{r}
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+library(viridis)
+library(leaflet)
+library(RColorBrewer)
+library(classInt)
+library(knitr)
+
+life_expectancy <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy.csv')
+life_expectancy_different_ages <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy_different_ages.csv')
+life_expectancy_female_male <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy_female_male.csv')
+
+```
+
+# Pivoting Data
+
+It looks like some countries have data that goes back pretty far, but all countries at least have data from 1950 to 2021. We'll pivot the data into wide format and look at the change in Female/Male life expectancy difference. 
+
+```{r}
+data.wide <- life_expectancy_female_male %>% 
+  filter(Year >= 1950) %>% 
+  pivot_wider(names_from = Year, values_from = LifeExpectancyDiffFM) %>% 
+  mutate("Relative Change in F/M Life Expectancy" = `2021` - `1950`)
+
+data.wide %>% head() %>% kable()
+```
+
+Now that all countries have a column with relative difference, lets plot the differences on a map. The values in the initial dataset represent a difference between female and male life expectancies in each year. The new column `Relative Change in F/M Life Expectancy` in the wider data is the change in life expectancy difference between females and males from 1950 to 2021. A negative value on the maps indicates a narrowing gap in life expectancy between females and males and a positive value indicates a widening gap.
+
+```{r}
+world <- ne_countries(scale = "small", returnclass = "sf")
+world <- left_join(world, data.wide, by = c("iso_a3_eh" = "Code"))
+
+
+p <- world %>% 
+   
+  ggplot() + 
+  theme_void() +
+  scale_fill_viridis_c(option = "B") +
+  geom_sf(aes(fill = `Relative Change in F/M Life Expectancy`),
+          color = NA) +
+  theme(legend.position = "bottom", 
+        legend.key.width= unit(.5, "in"), # imperial metrics
+        legend.key.height = unit(.3, "cm"), # or normal
+        plot.background = element_rect(fill = "white", color = NA))
+
+p
+```
+
+As an exercise, I tried a few methods for making the map interactive and finally settled on the map below. Templates for how I created this map can be found here: (https://cengel.github.io/R-spatial/mapping.html)
+
+```{r warning=FALSE}
+breaks_qt <- classIntervals(world$`Relative Change in F/M Life Expectancy`, n = 7, style = "quantile")
+pal_fun <- colorQuantile("YlOrRd", NULL, n = 5)
+
+p_popup <- paste0("<strong>Relative Change: </strong>", world$`Relative Change in F/M Life Expectancy`, "<br/>", "<strong>Country: </strong>", world$Entity)
+
+leaflet(world) %>%
+  addPolygons(
+    stroke = FALSE, 
+    fillColor = ~pal_fun(`Relative Change in F/M Life Expectancy`),
+    fillOpacity = 0.8, smoothFactor = 0.5,
+    popup = p_popup) %>%
+  addTiles() %>%
+  addLegend("bottomright", 
+            colors = brewer.pal(7, "YlOrRd"), 
+            labels = paste0("up to ", format(breaks_qt$brks[-1], digits = 2)),
+            title =  'Changes in Female/Male Life Expectancy Gaps from 1950 to 2021') # legend title
 ```
 

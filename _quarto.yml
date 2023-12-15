@@ -33,5 +33,3 @@ format:
       light: flatly
       dark: darkly
     number-sections: false
-  pdf:
-    documentclass: scrreprt
