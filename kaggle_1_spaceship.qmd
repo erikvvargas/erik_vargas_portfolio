@@ -1,24 +1,88 @@
 ---
 title: "Kaggle: Spaceship Titanic"
+execute: 
+  warning: false
+  message: false
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## Preliminaries
 
 ```{r}
-1 + 1
+library(tidyverse)
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(visdat)
+set.seed(0)
 ```
-
-You can add options to executable code like this 
 
 ```{r}
-#| echo: false
-2 * 2
+main.dir <- "C:\\Users\\erikv\\Downloads\\spaceship-titanic\\"
+train.csv <- paste0(main.dir,"train.csv")
+test.csv <- paste0(main.dir,"test.csv")
+
+train <- read_csv(train.csv)
+test <- read_csv(test.csv)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## Begin Feature Engineering
+
+From the data descriptions the `PassengerId` variable also indicates the group a passenger was traveling with. Similarly, the `Cabin` variable indicates the deck, room number, and side of the ship a passenger was on.
+
+```{r}
+# add in group variable based on PassengerId
+train$Group <- substr(train$PassengerId, 1, 4)
+
+# separate Cabin variable into deck, number, side from "/" delimiter
+train <- train %>% 
+  separate_wider_delim(Cabin, delim = "/", names = c("Deck", "Number", "Side"))
+
+train <- train %>% 
+  mutate_if(is.character, as.factor)
+```
+
+Next, we need to check the types of each columns to determine if any changes need to be made.
+
+```{r}
+summary(train)
+```
+
+Let's get a split from the train set to test model accuracy on.
+
+```{r}
+inds <- sample(nrow(train), .7*nrow(train))
+
+train.set <- train[inds,]
+test.set <- train[-inds,]
+```
+
+```{r}
+space_dt1 <- rpart(
+  formula = Transported ~ HomePlanet + CryoSleep + Deck + Number + 
+    Side + Destination + Age + VIP + RoomService + FoodCourt + 
+    ShoppingMall + Spa + VRDeck + Group,
+  data    = train.set,
+  method  = "class",
+  cp = .008,
+  na.action = na.pass
+)
+```
+
+```{r}
+space_dt1
+```
+
+```{r}
+rpart.plot(space_dt1)
+```
+
+
+
+```{r}
+pred.tree = predict(space_dt1, test.set, type = "class")
+```
+
+```{r}
+table(pred.tree,test.set$Transported)
+```
+

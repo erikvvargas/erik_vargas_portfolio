@@ -25,7 +25,7 @@ life_expectancy_female_male <- readr::read_csv('https://raw.githubusercontent.co
 
 ```
 
-# Pivoting Data
+## Pivoting Data
 
 It looks like some countries have data that goes back pretty far, but all countries at least have data from 1950 to 2021. We'll pivot the data into wide format and look at the change in Female/Male life expectancy difference. 
 
@@ -37,6 +37,8 @@ data.wide <- life_expectancy_female_male %>%
 
 data.wide %>% head() %>% kable()
 ```
+
+## Static World Map
 
 Now that all countries have a column with relative difference, lets plot the differences on a map. The values in the initial dataset represent a difference between female and male life expectancies in each year. The new column `Relative Change in F/M Life Expectancy` in the wider data is the change in life expectancy difference between females and males from 1950 to 2021. A negative value on the maps indicates a narrowing gap in life expectancy between females and males and a positive value indicates a widening gap.
 
@@ -59,6 +61,8 @@ p <- world %>%
 
 p
 ```
+
+## Interactive World Map: leaflet
 
 As an exercise, I tried a few methods for making the map interactive and finally settled on the map below. Templates for how I created this map can be found here: (https://cengel.github.io/R-spatial/mapping.html)
 
