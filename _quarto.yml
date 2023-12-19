@@ -22,8 +22,13 @@ book:
   #   href: https://erik-king-vargas.carrd.co/
   chapters:
     - index.qmd
-    - week_11-28-2023.qmd
-    - week_12-5-2023.qmd
+    - part: "TidyTuesday Projects"
+      chapters:
+      - week_11-28-2023.qmd
+      - week_12-5-2023.qmd
+    - part: "Kaggle Projects"
+      chapters:
+      - kaggle_1_spaceship.qmd
 
 bibliography: references.bib
 
@@ -32,4 +37,4 @@ format:
     theme:
       light: flatly
       dark: darkly
-    number-sections: false
+    number-sections: true
