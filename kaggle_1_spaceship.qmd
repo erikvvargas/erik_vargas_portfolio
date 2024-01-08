@@ -17,7 +17,7 @@ set.seed(0)
 ```
 
 ```{r}
-main.dir <- "C:\\Users\\erikv\\Downloads\\spaceship-titanic\\"
+main.dir <- "C:\\Users\\Erik\\Downloads\\spaceship-titanic\\"
 train.csv <- paste0(main.dir,"train.csv")
 test.csv <- paste0(main.dir,"test.csv")
 
@@ -36,13 +36,12 @@ train$Group <- substr(train$PassengerId, 1, 4)
 # separate Cabin variable into deck, number, side from "/" delimiter
 train <- train %>% 
   separate_wider_delim(Cabin, delim = "/", names = c("Deck", "Number", "Side"))
-
 train <- train %>% 
   mutate_if(is.character, as.factor)
 ```
 
 Next, we need to check the types of each columns to determine if any changes need to be made.
-
+ 
 ```{r}
 summary(train)
 ```

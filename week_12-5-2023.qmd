@@ -19,10 +19,15 @@ library(RColorBrewer)
 library(classInt)
 library(knitr)
 
-life_expectancy <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy.csv')
-life_expectancy_different_ages <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy_different_ages.csv')
-life_expectancy_female_male <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy_female_male.csv')
+# tuesdata <- tidytuesdayR::tt_load('2023-12-05')
+# life_expectancy <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy.csv')
+# life_expectancy_different_ages <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy_different_ages.csv')
+# life_expectancy_female_male <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-12-05/life_expectancy_female_male.csv')
+setwd("data")
 
+life_expectancy <- read_csv('life_expectancy.csv')
+life_expectancy_different_ages <- read_csv('life_expectancy_different_ages.csv')
+life_expectancy_female_male <- read_csv('life_expectancy_female_male.csv')
 ```
 
 ## Pivoting Data

@@ -26,6 +26,7 @@ book:
       chapters:
       - week_11-28-2023.qmd
       - week_12-5-2023.qmd
+      - week_1-9-2024.qmd
     - part: "Kaggle Projects"
       chapters:
       - kaggle_1_spaceship.qmd

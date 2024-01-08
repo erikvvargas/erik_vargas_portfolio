@@ -19,11 +19,15 @@ library(lubridate)
 
 ```{r}
 #| results: hide
-tuesdata <- tidytuesdayR::tt_load('2023-11-28')
+# tuesdata <- tidytuesdayR::tt_load('2023-11-28')
 
-drwho_episodes <- tuesdata$drwho_episodes
-drwho_directors <- tuesdata$drwho_directors
-drwho_writers <- tuesdata$drwho_writers
+# drwho_episodes <- tuesdata$drwho_episodes
+# drwho_directors <- tuesdata$drwho_directors
+# drwho_writers <- tuesdata$drwho_writers
+setwd("data")
+drwho_episodes <- read_csv("drwho_episodes.csv")
+drwho_directors <- read_csv("drwho_directors.csv")
+drwho_writers <- read_csv("drwho_writers.csv")
 ```
 
 ## Data Cleaning
