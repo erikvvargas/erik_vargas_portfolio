@@ -17,7 +17,7 @@ set.seed(0)
 ```
 
 ```{r}
-main.dir <- "C:\\Users\\Erik\\Downloads\\spaceship-titanic\\"
+main.dir <- "C:\\Users\\erikv\\Downloads\\spaceship-titanic\\"
 train.csv <- paste0(main.dir,"train.csv")
 test.csv <- paste0(main.dir,"test.csv")
 

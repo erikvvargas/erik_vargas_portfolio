@@ -32,3 +32,34 @@ nhl_rosters <- read_csv('nhl_rosters.csv')
 nhl_teams <- read_csv('nhl_teams.csv')
 ```
 
+```{r}
+canada_births_1991_2022 <- canada_births_1991_2022 %>% 
+  mutate(quarter = quarter(month), year_quarter = paste0(year, "-", quarter))
+```
+
+```{r}
+canada_births_1991_2022 %>% 
+  group_by(year_quarter) %>% 
+  summarise(total_births = sum(births)*.01) %>% 
+  ggplot(aes(x = year_quarter, y = total_births)) + 
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, size = 3))
+```
+
+It seems like the births in Canada overall seem to peak in the second quarter of each year. I'll contrast this with the births from the NHL birth dataset.
+
+```{r}
+nhl_player_births <- nhl_player_births %>% 
+  mutate(quarter = quarter(birth_month), year_quarter = paste0(birth_year, "-", quarter))
+```
+
+```{r}
+nhl_player_births %>% 
+  filter(birth_year > 1980) %>% 
+  group_by(year_quarter) %>%
+  summarise(sum_births = n()) %>% 
+  ggplot(aes(x = year_quarter, y = sum_births)) + 
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, size = 3)) 
+```
+
