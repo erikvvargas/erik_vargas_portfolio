@@ -21,10 +21,6 @@ library(lubridate)
 In the discussion of the dataset the first chapter of (https://www.amazon.com/Outliers-Story-Success-Malcolm-Gladwell/dp/0316017930)[Malcolm Gladwell's Outliers] is brought up and it's mentioned that in Canadian Junior Hockey there is a higher likelihood for players to be born in the first quarter of the year. We are given data on NHL players and their teams as well as data on births in Canada from 1991 to 2002. Before diving into the NHL data, let's look at how births are distributed by quarter year over year.
 
 ```{r}
-# canada_births_1991_2022 <- tuesdata$canada_births_1991_2022
-# nhl_player_births <- tuesdata$nhl_player_births
-# nhl_rosters <- tuesdata$nhl_rosters
-# nhl_teams <- tuesdata$nhl_teams
 setwd('data')
 canada_births_1991_2022 <- read_csv('canada_births_1991_2022.csv')
 nhl_player_births <- read_csv('nhl_player_births.csv')
@@ -33,11 +29,13 @@ nhl_teams <- read_csv('nhl_teams.csv')
 ```
 
 ```{r}
+# put the months for canada births into quarters
 canada_births_1991_2022 <- canada_births_1991_2022 %>% 
   mutate(quarter = quarter(month), year_quarter = paste0(year, "-", quarter))
 ```
 
 ```{r}
+# plot the canada births over time to see trends
 canada_births_1991_2022 %>% 
   group_by(year_quarter) %>% 
   summarise(total_births = sum(births)*.01) %>% 
@@ -49,6 +47,8 @@ canada_births_1991_2022 %>%
 It seems like the births in Canada overall seem to peak in the second quarter of each year. I'll contrast this with the births from the NHL birth dataset.
 
 ```{r}
+# similar to above, create a year and quarter variable to contrast with 
+# canada births
 nhl_player_births <- nhl_player_births %>% 
   mutate(quarter = quarter(birth_month), year_quarter = paste0(birth_year, "-", quarter))
 ```
@@ -62,4 +62,25 @@ nhl_player_births %>%
   geom_bar(stat = "identity") +
   theme(axis.text.x = element_text(angle = 90, size = 3)) 
 ```
+
+This certainly seems to show a trend that the first quarter of each year has the highest amount of births. I'm going to make a heatmap to see by month and year how the births look. For this data, I'll constrain it to births from 1954 to 2004 to trim the dataset a bit and make it slightly more relevant to NHL today.
+
+```{r}
+#Assign color variables
+col1 = "white" 
+col2 = "#272770"
+
+nhl_player_births %>% 
+  # mutate(birth_month = month(birth_month, label = TRUE)) %>% 
+  filter(birth_year > 1953 & birth_year < 2005) %>% 
+  group_by(birth_year, quarter) %>% 
+  summarise(N = n()) %>% 
+  ggplot(aes(birth_year, quarter)) + geom_tile(aes(fill = N),colour = "white") +
+  scale_fill_gradient(low = col1, high = col2) +  
+  guides(fill=guide_legend(title="Total Births")) +
+  labs(title = "NHL Player Birth Heatmap",
+       x = "Birth Year", y = "Birth Quarter") +
+  theme_bw() + theme_minimal() 
+```
+
 

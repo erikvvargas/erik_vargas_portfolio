@@ -5,18 +5,18 @@ project:
 book:
   title: "Tidy Tuesday"
   author: "Erik King-Vargas"
-  date: 12/6/2023
+  date: 1/15/2023
   search: true
   page-navigation: true
-  repo-url: https://github.com/erikvvargas/tidytuesdayprojects
+  repo-url: https://github.com/erikvvargas/ds_projects
   sidebar:
     tools:
-      - icon: share-fill
-        href: https://erik-king-vargas.carrd.co/
+      # - icon: share-fill
+      #   href: https://erik-king-vargas.carrd.co/
       - icon: linkedin
-        href: https://www.linkedin.com/in/erikkingvargas/
+        href: https://www.linkedin.com/in/erikvvargas/
       - icon: envelope
-        href: mailto:erik.king.vargas@gmail.com
+        href: mailto:erikvvargas@gmail.com
   # links:
   #   - icon: rocket-takeoff
   #   href: https://erik-king-vargas.carrd.co/
@@ -27,9 +27,9 @@ book:
       - week_11-28-2023.qmd
       - week_12-5-2023.qmd
       - week_1-9-2024.qmd
-    - part: "Kaggle Projects"
-      chapters:
-      - kaggle_1_spaceship.qmd
+    # - part: "Kaggle Projects"
+    #   chapters:
+    #   - kaggle_1_spaceship.qmd
 
 bibliography: references.bib
 
