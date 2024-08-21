@@ -8,11 +8,11 @@ book:
   date: today
   search: true
   page-navigation: true
-  repo-url: https://github.com/erikvvargas/ds_projects
+  repo-url: https://github.com/erikvvargas/erik_vargas_portfolio
   sidebar:
     tools:
-      # - icon: share-fill
-      #   href: https://erik-king-vargas.carrd.co/
+      - icon: rocket-takeoff
+        href: https://erik-king-vargas.carrd.co/
       - icon: linkedin
         href: https://www.linkedin.com/in/erikvvargas/
       - icon: envelope
