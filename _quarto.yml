@@ -3,9 +3,9 @@ project:
   output-dir: docs
 
 book:
-  title: "Tidy Tuesday"
+  title: "Portfolio"
   author: "Erik King-Vargas"
-  date: 1/15/2023
+  date: today
   search: true
   page-navigation: true
   repo-url: https://github.com/erikvvargas/ds_projects
@@ -25,8 +25,8 @@ book:
     - part: "TidyTuesday Projects"
       chapters:
       - week_11-28-2023.qmd
-      - week_12-5-2023.qmd
       - week_1-9-2024.qmd
+      - week_12-5-2023.qmd
     # - part: "Kaggle Projects"
     #   chapters:
     #   - kaggle_1_spaceship.qmd
